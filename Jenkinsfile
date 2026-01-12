@@ -19,7 +19,7 @@ pipeline {
                 bat '''
                 docker stop expense-app
                 docker rm expense-app
-                docker run -d -p 8080:80 --name expense-app expense-tracker
+                docker run -d -p 8091:80 --name expense-app expense-tracker
                 '''
             }
         }
