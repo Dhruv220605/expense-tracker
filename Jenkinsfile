@@ -10,15 +10,15 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t expense-tracker .'
+                bat 'docker build -t expense-tracker .'
             }
         }
 
         stage('Run Container') {
             steps {
-                sh '''
-                docker stop expense-app || true
-                docker rm expense-app || true
+                bat '''
+                docker stop expense-app
+                docker rm expense-app
                 docker run -d -p 8080:80 --name expense-app expense-tracker
                 '''
             }
