@@ -2,9 +2,28 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    withCredentials([
+                        string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')
+                    ]) {
+                        bat '''
+                        sonar-scanner ^
+                        -Dsonar.projectKey=expense-tracker ^
+                        -Dsonar.sources=. ^
+                        -Dsonar.host.url=http://localhost:9000 ^
+                        -Dsonar.login=%SONAR_TOKEN%
+                        '''
+                    }
+                }
             }
         }
 
@@ -17,8 +36,8 @@ pipeline {
         stage('Run Container') {
             steps {
                 bat '''
-                docker stop expense-app
-                docker rm expense-app
+                docker stop expense-app || exit 0
+                docker rm expense-app || exit 0
                 docker run -d -p 8091:80 --name expense-app expense-tracker
                 '''
             }
