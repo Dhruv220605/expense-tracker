@@ -29,6 +29,14 @@
                     </div>
                 </div>
                 <div class="header-stats">
+                    <button class="stat-item insights-btn" id="insightsBtn" title="Smart Insights">
+                        <i class="fas fa-lightbulb"></i>
+                        <span id="insightsIndicator"></span>
+                    </button>
+                    <button class="stat-item currency-btn" id="currencyBtn" title="Change Currency">
+                        <span id="currencyDisplay">INR</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
                     <button class="stat-item calendar-btn" id="calendarBtn" title="Select week">
                         <i class="fas fa-calendar-week"></i>
                         <span id="currentWeek"></span>
@@ -63,7 +71,7 @@
                             <div class="input-group">
                                 <label>
                                     <i class="fas fa-rupee-sign"></i>
-                                    Amount
+                                    Amount (<span id="amountCurrencySymbol">₹</span>)
                                 </label>
                                 <input type="number" id="expenseAmount" placeholder="0.00" required step="0.01" min="0">
                             </div>
@@ -252,6 +260,168 @@
                     <button class="action-btn primary" id="applyWeekBtn">
                         <i class="fas fa-check"></i>
                         Apply
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insights Modal -->
+    <div class="insights-modal" id="insightsModal">
+        <div class="insights-overlay"></div>
+        <div class="insights-popup">
+            <div class="insights-header">
+                <h3>
+                    <i class="fas fa-brain"></i>
+                    Smart Insights
+                </h3>
+                <button class="close-insights" id="closeInsights">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="insights-body">
+                <div class="insights-loading" id="insightsLoading">
+                    <div class="loading-spinner"></div>
+                    <p>Analyzing your spending patterns...</p>
+                </div>
+                <div class="insights-content" id="insightsContent">
+                    <div class="insights-section">
+                        <h4><i class="fas fa-chart-line"></i> Spending Trends</h4>
+                        <div class="insight-item" id="weeklyTrend">
+                            <div class="insight-icon">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div class="insight-text">
+                                <span class="insight-title">Weekly Trend</span>
+                                <span class="insight-value" id="weeklyTrendValue">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="insight-item" id="monthlyTrend">
+                            <div class="insight-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="insight-text">
+                                <span class="insight-title">Monthly Trend</span>
+                                <span class="insight-value" id="monthlyTrendValue">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insights-section">
+                        <h4><i class="fas fa-trophy"></i> Spending Highlights</h4>
+                        <div class="insight-item" id="highestDay">
+                            <div class="insight-icon">
+                                <i class="fas fa-calendar-day"></i>
+                            </div>
+                            <div class="insight-text">
+                                <span class="insight-title">Highest Spend Day</span>
+                                <span class="insight-value" id="highestDayValue">Loading...</span>
+                            </div>
+                        </div>
+                        <div class="insight-item" id="topCategory">
+                            <div class="insight-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="insight-text">
+                                <span class="insight-title">Top Category</span>
+                                <span class="insight-value" id="topCategoryValue">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="insights-section">
+                        <h4><i class="fas fa-lightbulb"></i> Recommendations</h4>
+                        <div class="recommendation-item" id="recommendation1">
+                            <div class="recommendation-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="recommendation-text" id="recommendation1Text">
+                                Analyzing your spending patterns...
+                            </div>
+                        </div>
+                        <div class="recommendation-item" id="recommendation2">
+                            <div class="recommendation-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="recommendation-text" id="recommendation2Text">
+                                Loading personalized tips...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Currency Modal -->
+    <div class="currency-modal" id="currencyModal">
+        <div class="currency-overlay"></div>
+        <div class="currency-popup">
+            <div class="currency-header">
+                <h3>
+                    <i class="fas fa-dollar-sign"></i>
+                    Currency Settings
+                </h3>
+                <button class="close-currency" id="closeCurrency">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="currency-body">
+                <div class="currency-selector">
+                    <label for="currencySelect">Select Currency:</label>
+                    <select id="currencySelect" class="currency-dropdown">
+                        <option value="INR">₹ Indian Rupee (INR)</option>
+                        <option value="USD">$ US Dollar (USD)</option>
+                        <option value="EUR">€ Euro (EUR)</option>
+                        <option value="GBP">£ British Pound (GBP)</option>
+                        <option value="JPY">¥ Japanese Yen (JPY)</option>
+                        <option value="CAD">C$ Canadian Dollar (CAD)</option>
+                        <option value="AUD">A$ Australian Dollar (AUD)</option>
+                    </select>
+                </div>
+                
+                <div class="exchange-rates">
+                    <h4>Exchange Rates (Live)</h4>
+                    <div class="rates-loading" id="ratesLoading">
+                        <div class="loading-spinner"></div>
+                        <p>Fetching latest rates...</p>
+                    </div>
+                    <div class="rates-content" id="ratesContent">
+                        <div class="rate-item">
+                            <span class="rate-currency">USD</span>
+                            <span class="rate-value" id="usdRate">Loading...</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-currency">EUR</span>
+                            <span class="rate-value" id="eurRate">Loading...</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-currency">GBP</span>
+                            <span class="rate-value" id="gbpRate">Loading...</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-currency">JPY</span>
+                            <span class="rate-value" id="jpyRate">Loading...</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-currency">CAD</span>
+                            <span class="rate-value" id="cadRate">Loading...</span>
+                        </div>
+                        <div class="rate-item">
+                            <span class="rate-currency">AUD</span>
+                            <span class="rate-value" id="audRate">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="currency-actions">
+                    <button class="action-btn secondary" id="resetCurrencyBtn">
+                        <i class="fas fa-undo"></i>
+                        Reset to INR
+                    </button>
+                    <button class="action-btn primary" id="applyCurrencyBtn">
+                        <i class="fas fa-check"></i>
+                        Apply Currency
                     </button>
                 </div>
             </div>
