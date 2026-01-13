@@ -1,7 +1,22 @@
-FROM nginxinc/nginx-unprivileged:alpine
+FROM nginx:alpine
 
-# Copy static site files
+# Create non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Copy custom nginx config
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Copy static files
 COPY . /usr/share/nginx/html
 
-# Expose non-root nginx port
-EXPOSE 8091
+# Fix permissions
+RUN chown -R appuser:appgroup \
+    /usr/share/nginx \
+    /var/cache/nginx \
+    /var/run \
+    /var/log/nginx
+
+# Switch user
+USER appuser
+
+EXPOSE 80
