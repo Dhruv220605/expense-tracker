@@ -13,3 +13,5 @@ RUN chown -R appuser:appgroup /usr/share/nginx/html
 USER appuser
 
 EXPOSE 80
+
+# test commit
