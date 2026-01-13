@@ -12,17 +12,11 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    withCredentials([
-                        string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')
-                    ]) {
-                        bat '''
-                        sonar-scanner ^
-                        -Dsonar.projectKey=expense-tracker ^
-                        -Dsonar.sources=. ^
-                        -Dsonar.host.url=http://localhost:9000 ^
-                        -Dsonar.login=%SONAR_TOKEN%
-                        '''
-                    }
+                    bat '''
+                    sonar-scanner ^
+                    -Dsonar.projectKey=expense-tracker ^
+                    -Dsonar.sources=.
+                    '''
                 }
             }
         }
