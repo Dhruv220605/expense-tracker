@@ -11,11 +11,12 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     bat '''
                     sonar-scanner ^
                     -Dsonar.projectKey=expense-tracker ^
-                    -Dsonar.sources=.
+                    -Dsonar.sources=. ^
+                    -Dsonar.login=%SONAR_TOKEN%
                     '''
                 }
             }
