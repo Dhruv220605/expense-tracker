@@ -17,11 +17,12 @@ pipeline {
             -Dsonar.projectKey=expense-tracker ^
             -Dsonar.sources=. ^
             -Dsonar.host.url=http://localhost:9000 ^
-            -Dsonar.login=%SONAR_TOKEN%
+            -Dsonar.token=%SONAR_TOKEN%
             '''
         }
     }
 }
+
 
         stage('Build Docker Image') {
             steps {
