@@ -29,6 +29,12 @@ pipeline {
             }
         }
 
+        stage('K8s Test') {
+            steps {
+                bat 'kubectl get nodes'
+            }
+        }
+
         stage('Deploy to Kubernetes') {
             steps {
                 bat '''
