@@ -29,12 +29,11 @@ pipeline {
             }
         }
 
-        stage('Run Container') {
+        stage('Deploy to Kubernetes') {
             steps {
                 bat '''
-                docker stop expense-app || exit 0
-                docker rm expense-app || exit 0
-                docker run -d -p 8092:80 --name expense-app expense-tracker
+                kubectl apply -f k8s/deployment.yaml
+                kubectl apply -f k8s/service.yaml
                 '''
             }
         }
