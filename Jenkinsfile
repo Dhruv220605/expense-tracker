@@ -29,17 +29,12 @@ pipeline {
             }
         }
 
-        stage('K8s Test') {
-            steps {
-                bat 'kubectl get nodes'
-            }
-        }
-
-        stage('Deploy to Kubernetes') {
+        stage('Run Docker Container') {
             steps {
                 bat '''
-                kubectl apply -f k8s/deployment.yaml
-                kubectl apply -f k8s/service.yaml
+                docker stop expense-app || exit 0
+                docker rm expense-app || exit 0
+                docker run -d -p 8091:80 --name expense-app expense-tracker
                 '''
             }
         }
